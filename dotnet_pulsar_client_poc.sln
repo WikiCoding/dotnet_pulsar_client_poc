@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dotnet_pulsar_client_poc", "dotnet_pulsar_client_poc\dotnet_pulsar_client_poc.csproj", "{0537D86E-043A-4977-81EB-71134C48BE0F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0537D86E-043A-4977-81EB-71134C48BE0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0537D86E-043A-4977-81EB-71134C48BE0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0537D86E-043A-4977-81EB-71134C48BE0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0537D86E-043A-4977-81EB-71134C48BE0F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
