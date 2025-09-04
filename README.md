@@ -87,3 +87,12 @@ public class PulsarConsumer(ILogger<PulsarConsumer> logger, PulsarClient pulsarC
 
 # Reference docs
 1. See here: https://github.com/fsprojects/pulsar-client-dotnet || https://github.com/fsprojects/pulsar-client-dotnet/blob/develop/examples/CsharpExamples/RealWorld.cs
+
+# Pulsar CLI Commands to use on Docker
+- imagining the topic: `persistent://gpd/smf-inbound/horseracing`
+1. First you need to create the tenant with the command `pulsar-admin tenants create gpd --admin-roles superuser`
+2. Then you create the namespace with the command `pulsar-admin namespaces create gpd/smf-inbound --clusters standalone` (in this case for docker is standalone)
+3. Now you can create the topic with `pulsar-admin topics create persistent://gpd/smf-inbound/horseracing`. If it's partitioned you must set it now.
+4. To test a producer you can set a CLI consumer with the command `pulsar-client consume persistent://gpd/smf-inbound/horseracing -s my-subscription`. The consumer will drop after getting the message, in order to avoid that use `pulsar-client consume persistent://gpd/smf-inbound/horseracing -s my-subscription -n 0`
+5. To list the namespaces in a tenant use the command `pulsar-admin namespaces list gpd`
+6. To list the tenants use the command `pulsar-admin tenants list`
