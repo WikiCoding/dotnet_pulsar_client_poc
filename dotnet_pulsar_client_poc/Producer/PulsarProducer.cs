@@ -17,7 +17,39 @@ public class PulsarProducer(PulsarClient pulsarClient, ILogger<PulsarProducer> l
             .CreateAsync();
 
         var msg = Encoding.UTF8.GetBytes(message);
+
+        logger.LogInformation("Sending message {message}", message);
+
+        await producer.SendAsync(msg);
+    }
+
+    public async Task ProduceAsyncTopic1(string message)
+    {
+        var producer = await pulsarClient.NewProducer()
+            .Topic("Topic1")
+            .CompressionType(CompressionType.None) // not required, I'm setting the default value anyway
+            .EnableBatching(false)
+            .ProducerName($"Producer-{Guid.NewGuid()}") // not required
+            .CreateAsync();
+
+        var msg = Encoding.UTF8.GetBytes(message);
         
+        logger.LogInformation("Sending message {message}", message);
+
+        await producer.SendAsync(msg);
+    }
+
+    public async Task ProduceAsyncTopic2(string message)
+    {
+        var producer = await pulsarClient.NewProducer()
+            .Topic("Topic2")
+            .CompressionType(CompressionType.None) // not required, I'm setting the default value anyway
+            .EnableBatching(false)
+            .ProducerName($"Producer-{Guid.NewGuid()}") // not required
+            .CreateAsync();
+
+        var msg = Encoding.UTF8.GetBytes(message);
+
         logger.LogInformation("Sending message {message}", message);
 
         await producer.SendAsync(msg);

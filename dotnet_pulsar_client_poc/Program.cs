@@ -25,6 +25,7 @@ var pulsarClient = await new PulsarClientBuilder()
 builder.Services.AddSingleton(pulsarClient);
 builder.Services.AddScoped<PulsarProducer>();
 builder.Services.AddHostedService<PulsarConsumer>();
+builder.Services.AddHostedService<PulsarMultipleConsumers>();
 
 var app = builder.Build();
 
