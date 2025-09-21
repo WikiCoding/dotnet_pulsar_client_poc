@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Pulsar.Client.Api;
+﻿using Pulsar.Client.Api;
 using Pulsar.Client.Common;
 using System.Text;
 
@@ -40,7 +39,9 @@ public class PulsarMultipleConsumers : BackgroundService
                 {
                     try
                     {
+                        _logger.LogWarning("Running thread {} for Topic {}", Environment.CurrentManagedThreadId, consumer.Topic);
                         await ConsumeMessage(consumer, stoppingToken);
+                        _logger.LogWarning("After consumed, we're on thread {} for Topic {}", Environment.CurrentManagedThreadId, consumer.Topic);
                     }
                     catch (OperationCanceledException)
                     {
@@ -65,8 +66,20 @@ public class PulsarMultipleConsumers : BackgroundService
 
         var msgString = Encoding.UTF8.GetString(message.GetValue());
 
-        _logger.LogInformation("Received message from {topic}: {msgString}", consumer.Topic, msgString);
+        _logger.LogInformation("Received message from {topic}: {msgString}. On Thread {thread}", consumer.Topic, msgString, Environment.CurrentManagedThreadId);
 
         await consumer.AcknowledgeAsync(message.MessageId);
+    }
+
+    public override async Task StopAsync(CancellationToken cancellationToken)
+    {
+        foreach (var consumer in _consumers)
+        {
+            await consumer.UnsubscribeAsync();
+            await consumer.DisposeAsync();
+        }
+        await base.StopAsync(cancellationToken);
+
+        await Task.CompletedTask;
     }
 }

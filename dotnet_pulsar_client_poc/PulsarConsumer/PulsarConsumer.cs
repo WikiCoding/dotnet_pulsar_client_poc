@@ -28,4 +28,9 @@ public class PulsarConsumer(ILogger<PulsarConsumer> logger, PulsarClient pulsarC
         
         await consumer.AcknowledgeAsync(message.MessageId);
     }
+
+    public override Task StopAsync(CancellationToken cancellationToken)
+    {
+        return base.StopAsync(cancellationToken);
+    }
 }
