@@ -16,17 +16,20 @@ public class PulsarConsumer(ILogger<PulsarConsumer> logger, PulsarClient pulsarC
         var consumer = await pulsarClient.NewConsumer()
             .Topic(pulsarSettings.Topic)
             .SubscriptionName(pulsarSettings.SubscriptionName)
-            .SubscriptionType(SubscriptionType.Exclusive)
+            .SubscriptionType(SubscriptionType.Failover)
             .ConsumerName($"Consumer-{Guid.NewGuid()}") // not required
             .SubscribeAsync();
-        
-        var message = await consumer.ReceiveAsync(stoppingToken);
-        
-        var msgString = Encoding.UTF8.GetString(message.GetValue()); // converting from byte[]
-            
-        logger.LogInformation("Received message: {msgString}", msgString);
-        
-        await consumer.AcknowledgeAsync(message.MessageId);
+
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            var message = await consumer.ReceiveAsync(stoppingToken);
+
+            var msgString = Encoding.UTF8.GetString(message.GetValue()); // converting from byte[]
+
+            logger.LogInformation("Received message: {msgString}", msgString);
+
+            await consumer.AcknowledgeAsync(message.MessageId);
+        }
     }
 
     public override Task StopAsync(CancellationToken cancellationToken)
