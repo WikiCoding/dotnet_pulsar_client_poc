@@ -70,16 +70,4 @@ public class PulsarMultipleConsumers : BackgroundService
 
         await consumer.AcknowledgeAsync(message.MessageId);
     }
-
-    public override async Task StopAsync(CancellationToken cancellationToken)
-    {
-        foreach (var consumer in _consumers)
-        {
-            await consumer.UnsubscribeAsync();
-            await consumer.DisposeAsync();
-        }
-        await base.StopAsync(cancellationToken);
-
-        await Task.CompletedTask;
-    }
 }
