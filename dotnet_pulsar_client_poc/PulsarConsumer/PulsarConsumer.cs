@@ -15,6 +15,7 @@ public class PulsarConsumer(ILogger<PulsarConsumer> logger, PulsarClient pulsarC
         
         var consumer = await pulsarClient.NewConsumer()
             .Topic(pulsarSettings.Topic)
+            .SubscriptionInitialPosition(Enum.Parse<SubscriptionInitialPosition>(pulsarSettings.InitialPosition))
             .SubscriptionName(pulsarSettings.SubscriptionName)
             .SubscriptionType(SubscriptionType.Failover)
             .ConsumerName($"Consumer-{Guid.NewGuid()}") // not required
